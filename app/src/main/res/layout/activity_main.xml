@@ -69,7 +69,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:fontFamily="@font/open_sans"
-            android:text="Nama Pengirim"
+            android:hint="Nama Pengirim"
             android:textColor="@color/black"
             android:textSize="15sp"
             android:textStyle="bold" />
@@ -93,7 +93,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:fontFamily="@font/open_sans"
-            android:text="Nomor Telepon"
+            android:hint="Nomor Telepon"
             android:textColor="@color/black"
             android:textSize="15sp"
             android:textStyle="bold" />
@@ -124,7 +124,7 @@
             android:layout_marginBottom="10dp"
             android:fontFamily="@font/open_sans"
             android:letterSpacing="0.2"
-            android:text="JENIS BARANG*"
+            android:text="JENIS BARANG"
             android:textColor="@android:color/darker_gray"
             android:textSize="11sp"
             android:textStyle="bold" />
@@ -197,7 +197,7 @@
     <fragment
         android:id="@+id/map"
         android:layout_width="match_parent"
-        android:layout_height="400dp"
+        android:layout_height="430dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="20dp"
@@ -207,16 +207,66 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="120dp"
+        android:layout_height="155dp"
         android:orientation="vertical"
         android:background="@drawable/rounded_rectangle"
         android:elevation="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         >
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:text="PICKUP LOCATION"
+            android:letterSpacing="0.2"
+            android:fontFamily="@font/open_sans"
+            android:textStyle="bold"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="10dp"
+            android:textColor="@color/black"
+            />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+            <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_location"
+            android:layout_marginStart="20dp"
+            />
 
+            <TextView
+                android:id="@+id/txtAddress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:gravity="center"
+                android:fontFamily="@font/open_sans"
+                android:hint="Alamat"
+                android:textAlignment="viewStart"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
     </LinearLayout>
+
+
+        <Button
+            android:id="@+id/containedButton"
+            android:layout_width="450dp"
+            android:layout_height="60dp"
+            android:text="Next"
+            android:textColor="@color/black"
+            android:backgroundTint="@color/white"
+            android:layout_gravity="center"
+            />
+
+    </LinearLayout>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
