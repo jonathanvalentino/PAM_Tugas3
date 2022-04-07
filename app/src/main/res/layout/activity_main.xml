@@ -65,6 +65,7 @@
             android:textStyle="bold" />
 
         <EditText
+            android:id="@+id/senderName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
@@ -89,6 +90,7 @@
             android:textStyle="bold" />
 
         <EditText
+            android:id="@+id/numCell"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
@@ -130,6 +132,7 @@
             android:textStyle="bold" />
 
         <ImageView
+            android:id="@+id/typeFood"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_alignParentStart="true"
@@ -139,6 +142,7 @@
             android:src="@drawable/ic_food" />
 
         <ImageView
+            android:id="@+id/typeDocument"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_alignParentTop="true"
@@ -150,6 +154,7 @@
             android:src="@drawable/ic_document" />
 
         <ImageView
+            android:id="@+id/typeMedicine"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_alignParentStart="true"
@@ -162,6 +167,7 @@
 
 
         <ImageView
+            android:id="@+id/typeCloth"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_alignParentEnd="true"
@@ -173,17 +179,17 @@
             android:src="@drawable/ic_cloth" />
 
         <TextView
+            android:id="@+id/typeOther"
             android:layout_width="140dp"
             android:layout_height="30dp"
             android:layout_alignParentBottom="true"
+            android:layout_marginBottom="10dp"
             android:fontFamily="@font/open_sans"
+            android:gravity="center"
             android:letterSpacing="0.2"
             android:text="LAINNYA"
-            android:gravity="center"
             android:textSize="11dp"
-            android:textStyle="bold"
-            android:layout_marginBottom="10dp"
-            />
+            android:textStyle="bold" />
 
 
     </RelativeLayout>

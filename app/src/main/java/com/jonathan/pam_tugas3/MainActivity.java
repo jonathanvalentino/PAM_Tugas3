@@ -2,10 +2,16 @@ package com.jonathan.pam_tugas3;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -28,8 +34,13 @@ import java.util.Locale;
 public class MainActivity extends FragmentActivity implements OnMapReadyCallback {
     Location currentLocation;
     FusedLocationProviderClient fusedLocationProviderClient;
+    private Button containedButton;
+    private EditText senderName, numCell;
+    private ImageView typeFood, typeCloth, typeMedicine, typeDocument;
+    private TextView typeOther;
     private static final int REQUEST_CODE = 101;
     private TextView txtAddress;
+    private String jenis;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,7 +48,96 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         txtAddress = findViewById(R.id.txtAddress);
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         fetchLocation();
+
+        typeFood = findViewById(R.id.typeFood);
+        typeDocument = findViewById(R.id.typeDocument);
+        typeMedicine = findViewById(R.id.typeMedicine);
+        typeCloth = findViewById(R.id.typeCloth);
+        typeOther = findViewById(R.id.typeOther);
+        senderName = findViewById(R.id.senderName);
+        numCell = findViewById(R.id.numCell);
+        containedButton = findViewById(R.id.containedButton);
+
+        typeFood.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                typeFood.setColorFilter(Color.argb(255, 255, 165, 0));
+                typeDocument.clearColorFilter();
+                typeMedicine.clearColorFilter();
+                typeCloth.clearColorFilter();
+                typeOther.setTextColor(Color.argb(255, 169, 169, 169));
+                jenis = "Food";
+            }
+        });
+
+        typeDocument.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                typeFood.clearColorFilter();
+                typeDocument.setColorFilter(Color.argb(255, 105, 144, 29));
+                typeMedicine.clearColorFilter();
+                typeCloth.clearColorFilter();
+                typeOther.setTextColor(Color.argb(255, 169, 169, 169));
+                jenis = "Document";
+            }
+        });
+
+        typeMedicine.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                typeFood.clearColorFilter();
+                typeDocument.clearColorFilter();
+                typeMedicine.setColorFilter(Color.argb(255, 138, 3, 3));
+                typeCloth.clearColorFilter();
+                typeOther.setTextColor(Color.argb(255, 169, 169, 169));
+                jenis = "Medicine";
+            }
+        });
+
+        typeCloth.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                typeFood.clearColorFilter();
+                typeDocument.clearColorFilter();
+                typeMedicine.clearColorFilter();
+                typeCloth.setColorFilter(Color.argb(255, 28, 94, 144));
+                typeOther.setTextColor(Color.argb(255, 169, 169, 169));
+                jenis = "Cloth";
+            }
+        });
+
+        typeOther.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                typeFood.clearColorFilter();
+                typeDocument.clearColorFilter();
+                typeMedicine.clearColorFilter();
+                typeCloth.clearColorFilter();
+                typeOther.setTextColor(Color.argb(255, 64, 224, 208));
+                jenis = "Other";
+            }
+        });
+
+        containedButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if( TextUtils.isEmpty(senderName.getText())){
+                    senderName.setError( "Sender name is required!" );
+                }
+                else if(TextUtils.isEmpty(numCell.getText())){
+                    numCell.setError( "Sender phone number is required!" );
+                }
+                else if(TextUtils.isEmpty(jenis)){
+                    Toast.makeText(getApplicationContext(),"Pilih jenis barang yang akan dikirim", Toast.LENGTH_LONG).show();
+                }
+                else{
+                    //Execute to firebase db and store sender data
+                }
+
+            }
+        });
     }
+
     private void fetchLocation() {
         if (ActivityCompat.checkSelfPermission(
                 this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
