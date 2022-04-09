@@ -53,6 +53,7 @@ public class RecipientActivity extends AppCompatActivity implements OnMapReadyCa
     private String orderId;
     private TextView test;
     private GoogleMap gMap;
+    private ImageView buttonBack;
     Location currentLocation;
     FusedLocationProviderClient fusedLocationProviderClient;
     private FirebaseFirestore db;
@@ -63,6 +64,7 @@ public class RecipientActivity extends AppCompatActivity implements OnMapReadyCa
     private static final int REQUEST_CODE = 101;
     private TextView txtAddress, txtOrderId;
     private Marker selectedMarker;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,6 +101,13 @@ public class RecipientActivity extends AppCompatActivity implements OnMapReadyCa
             }
         });
 
+        buttonBack = findViewById(R.id.buttonBack);
+        buttonBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
     }
 
     private void fetchLocation() {
@@ -166,9 +175,11 @@ public class RecipientActivity extends AppCompatActivity implements OnMapReadyCa
         Map<String, Object> penerima = new HashMap<>();
         Map<String, Object> order = new HashMap<>();
 
-        penerima.put("Recipient name ", recipientName.getText().toString());
+        penerima.put("Recipient name", recipientName.getText().toString());
         penerima.put("Recipient phone number", numCell.getText().toString());
         penerima.put("Recipient delivery address", txtAddress.getText().toString());
+        penerima.put("latDelivery", selectedPlace.latitude);
+        penerima.put("lngDelivery", selectedPlace.longitude);
 
         order.put("penerima", penerima);
 

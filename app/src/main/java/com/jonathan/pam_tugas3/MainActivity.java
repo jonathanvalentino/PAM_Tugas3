@@ -60,6 +60,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        containedButtonList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), ListActivity.class));
+            }
+        });
+
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             success = bundle.getBoolean("success");

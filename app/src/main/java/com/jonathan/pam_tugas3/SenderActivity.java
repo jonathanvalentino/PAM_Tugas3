@@ -44,10 +44,10 @@ public class SenderActivity extends AppCompatActivity implements OnMapReadyCallb
     private FirebaseFirestore db;
     private Button containedButton;
     private EditText senderName, numCell;
-    private ImageView typeFood, typeCloth, typeMedicine, typeDocument;
+    private ImageView typeFood, typeCloth, typeMedicine, typeDocument, buttonBack;
     private TextView typeOther;
     private static final int REQUEST_CODE = 101;
-    private TextView txtAddress, txtOrderId;
+    private TextView txtAddress;
     public String jenis, orderId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +66,7 @@ public class SenderActivity extends AppCompatActivity implements OnMapReadyCallb
         senderName = findViewById(R.id.senderName);
         numCell = findViewById(R.id.numCell);
         containedButton = findViewById(R.id.containedButton);
-        txtOrderId = findViewById(R.id.txtOrderId);
+        buttonBack = findViewById(R.id.buttonBack);
 
         typeFood.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -148,6 +148,14 @@ public class SenderActivity extends AppCompatActivity implements OnMapReadyCallb
 
             }
         });
+
+        buttonBack = findViewById(R.id.buttonBack);
+        buttonBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
     }
 
     private void fetchLocation() {
@@ -217,7 +225,7 @@ public class SenderActivity extends AppCompatActivity implements OnMapReadyCallb
 
         String name = senderName.getText().toString();
 
-        pengirim.put("Sender name ", senderName.getText().toString());
+        pengirim.put("Sender_name ", senderName.getText().toString());
         pengirim.put("Sender phone number", numCell.getText().toString());
         pengirim.put("Sender pickup address", txtAddress.getText().toString());
 
@@ -231,7 +239,6 @@ public class SenderActivity extends AppCompatActivity implements OnMapReadyCallb
         db.collection("orders")
                 .add(order)
                 .addOnSuccessListener(documentReference -> {
-                    txtOrderId.setText(documentReference.getId());
                     orderId = documentReference.getId();
                     startActivity(new Intent(getApplicationContext(), RecipientActivity.class)
                             .putExtra("orderId", orderId));

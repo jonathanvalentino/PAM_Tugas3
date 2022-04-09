@@ -24,31 +24,29 @@
         >
 
         <ImageView
+            android:id="@+id/buttonBack"
             android:layout_width="50dp"
             android:layout_height="70dp"
             android:padding="15dp"
-            android:src="@drawable/ic_send"
+            android:src="@drawable/ic_back"
             android:contentDescription="@string/app_name"
             />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="270dp"
             android:layout_height="70dp"
-            android:gravity="center"
             android:fontFamily="@font/open_sans"
             android:text="Detail delivery"
+            android:gravity="center_vertical"
             android:textSize="16dp"
             android:textStyle="bold"
             />
 
-        <TextView
-            android:id="@+id/txtOrderId"
-            android:layout_width="wrap_content"
+        <ImageView
+            android:layout_width="100dp"
             android:layout_height="70dp"
-            android:gravity="center"
-            android:fontFamily="@font/open_sans"
-            android:textSize="16dp"
-            android:textStyle="bold"
+            android:src="@drawable/logo"
+            android:layout_marginTop="5dp"
             />
 
     </LinearLayout>
@@ -101,6 +99,7 @@
             android:fontFamily="@font/open_sans"
             android:letterSpacing="0.2"
             android:text="NOMOR TELEPON*"
+            android:maxLength="35"
             android:textColor="@android:color/darker_gray"
             android:textSize="11sp"
             android:textStyle="bold" />
@@ -112,6 +111,8 @@
             android:layout_marginStart="20dp"
             android:fontFamily="@font/open_sans"
             android:hint="Nomor Telepon"
+            android:inputType = "number"
+            android:maxLength="20"
             android:textColor="@color/black"
             android:textSize="15sp"
             android:textStyle="bold" />
