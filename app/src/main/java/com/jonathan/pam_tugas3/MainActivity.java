@@ -1,6 +1,7 @@
 package com.jonathan.pam_tugas3;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Address;
@@ -24,29 +25,37 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
 
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
-public class MainActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
     Location currentLocation;
     FusedLocationProviderClient fusedLocationProviderClient;
+    private FirebaseFirestore db;
     private Button containedButton;
     private EditText senderName, numCell;
     private ImageView typeFood, typeCloth, typeMedicine, typeDocument;
     private TextView typeOther;
     private static final int REQUEST_CODE = 101;
-    private TextView txtAddress;
-    private String jenis;
+    private TextView txtAddress, txtOrderId;
+    public String jenis, orderId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         txtAddress = findViewById(R.id.txtAddress);
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+        db = FirebaseFirestore.getInstance();
         fetchLocation();
 
         typeFood = findViewById(R.id.typeFood);
@@ -57,6 +66,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         senderName = findViewById(R.id.senderName);
         numCell = findViewById(R.id.numCell);
         containedButton = findViewById(R.id.containedButton);
+        txtOrderId = findViewById(R.id.txtOrderId);
 
         typeFood.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -132,6 +142,8 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 }
                 else{
                     //Execute to firebase db and store sender data
+                    saveOrder();
+
                 }
 
             }
@@ -151,7 +163,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             public void onSuccess(Location location) {
                 if (location != null) {
                     currentLocation = location;
-                    Toast.makeText(getApplicationContext(), currentLocation.getLatitude() + "" + currentLocation.getLongitude(), Toast.LENGTH_SHORT).show();
                     SupportMapFragment supportMapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
                     assert supportMapFragment != null;
                     supportMapFragment.getMapAsync(MainActivity.this);
@@ -199,4 +210,36 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 break;
         }
     }
-}
+
+    private void saveOrder() {
+        Map<String, Object> order = new HashMap<>();
+        Map<String, Object> pengirim = new HashMap<>();
+
+        String name = senderName.getText().toString();
+
+        pengirim.put("Sender name ", senderName.getText().toString());
+        pengirim.put("Sender phone number", numCell.getText().toString());
+        pengirim.put("Sender pickup address", txtAddress.getText().toString());
+
+        order.put("name", name);
+        order.put("createdDate", new Date());
+        order.put("jenis barang", jenis);
+        order.put("pengirim", pengirim);
+
+
+
+            db.collection("orders")
+                    .add(order)
+                    .addOnSuccessListener(documentReference -> {
+                        txtOrderId.setText(documentReference.getId());
+                        orderId = documentReference.getId();
+                        startActivity(new Intent(getApplicationContext(), RecipientActivity.class)
+                                .putExtra("orderId", orderId));
+                    })
+                    .addOnFailureListener(e -> {
+                        Toast.makeText(this, "Gagal tambah data order", Toast.LENGTH_SHORT).show();
+                    });
+
+
+        }
+    }
