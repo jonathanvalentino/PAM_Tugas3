@@ -5,12 +5,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -26,12 +29,23 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.WriteBatch;
 
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class RecipientActivity extends AppCompatActivity implements OnMapReadyCallback,
         GoogleMap.OnMapClickListener {
@@ -43,7 +57,7 @@ public class RecipientActivity extends AppCompatActivity implements OnMapReadyCa
     FusedLocationProviderClient fusedLocationProviderClient;
     private FirebaseFirestore db;
     private Button containedButton;
-    private EditText senderName, numCell;
+    private EditText recipientName, numCell;
     private LatLng selectedPlace;
     private TextView typeOther;
     private static final int REQUEST_CODE = 101;
@@ -58,10 +72,32 @@ public class RecipientActivity extends AppCompatActivity implements OnMapReadyCa
         Intent intent = getIntent();
         orderId = intent.getStringExtra("orderId");
 
+        recipientName = findViewById(R.id.recipientName);
+        numCell = findViewById(R.id.numCell);
         txtAddress = findViewById(R.id.txtAddress);
+        containedButton = findViewById(R.id.containedButton);
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         db = FirebaseFirestore.getInstance();
         fetchLocation();
+
+
+        containedButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if( TextUtils.isEmpty(recipientName.getText())){
+                    recipientName.setError( "Recipient name is required!" );
+                }
+                else if(TextUtils.isEmpty(numCell.getText())){
+                    numCell.setError( "Recipient phone number is required!" );
+                }
+                else{
+                    //Execute to edit firebase db and store recipient data
+                    saveOrder();
+
+                }
+
+            }
+        });
 
     }
 
@@ -72,7 +108,7 @@ public class RecipientActivity extends AppCompatActivity implements OnMapReadyCa
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE);
             return;
         }
-        Task<Location> task = fusedLocationProviderClient.getLastLocation();
+        @SuppressLint("MissingPermission") Task<Location> task = fusedLocationProviderClient.getLastLocation();
         task.addOnSuccessListener(new OnSuccessListener<Location>() {
             @Override
             public void onSuccess(Location location) {
@@ -126,5 +162,25 @@ public class RecipientActivity extends AppCompatActivity implements OnMapReadyCa
         }
     }
 
+    private void saveOrder() {
+        Map<String, Object> penerima = new HashMap<>();
+        Map<String, Object> order = new HashMap<>();
+
+        penerima.put("Recipient name ", recipientName.getText().toString());
+        penerima.put("Recipient phone number", numCell.getText().toString());
+        penerima.put("Recipient delivery address", txtAddress.getText().toString());
+
+        order.put("penerima", penerima);
+
+        db.collection("orders").document(orderId)
+                .update(order)
+                .addOnSuccessListener(e -> {
+                            startActivity(new Intent(getApplicationContext(), MainActivity.class)
+                            .putExtra("success",true));
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(this, "Gagal tambah data order", Toast.LENGTH_SHORT).show();
+                });
+    }
 
 }

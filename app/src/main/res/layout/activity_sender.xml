@@ -6,13 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/test"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <LinearLayout
         android:id="@+id/layoutTitle"
         android:layout_width="match_parent"
@@ -36,7 +29,7 @@
             android:layout_height="70dp"
             android:gravity="center"
             android:fontFamily="@font/open_sans"
-            android:text="Detail delivery"
+            android:text="Detail pengiriman barang"
             android:textSize="16dp"
             android:textStyle="bold"
             />
@@ -61,11 +54,12 @@
 
     <LinearLayout
         android:id="@+id/layoutPengirim"
-        android:layout_width="match_parent"
+        android:layout_width="270dp"
         android:layout_height="170dp"
         android:orientation="vertical"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/layoutTitle">
+        app:layout_constraintTop_toBottomOf="@id/layoutTitle"
+        app:layout_constraintEnd_toStartOf="@id/layoutJenis">
 
         <TextView
             android:layout_width="wrap_content"
@@ -75,18 +69,18 @@
             android:layout_marginBottom="10dp"
             android:fontFamily="@font/open_sans"
             android:letterSpacing="0.2"
-            android:text="NAMA PENERIMA*"
+            android:text="NAMA PENGIRIM*"
             android:textColor="@android:color/darker_gray"
             android:textSize="11sp"
             android:textStyle="bold" />
 
         <EditText
-            android:id="@+id/recipientName"
+            android:id="@+id/senderName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:fontFamily="@font/open_sans"
-            android:hint="Nama Penerima"
+            android:hint="Nama Pengirim"
             android:textColor="@color/black"
             android:textSize="15sp"
             android:textStyle="bold" />
@@ -119,6 +113,12 @@
     </LinearLayout>
 
     <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"
+        app:layout_constraintTop_toBottomOf="@id/layoutPengirim"/>
+
+    <View
         android:layout_width="1dp"
         android:layout_height="150dp"
         android:layout_marginTop="10dp"
@@ -126,11 +126,90 @@
         app:layout_constraintStart_toEndOf="@id/layoutPengirim"
         app:layout_constraintTop_toBottomOf="@id/layoutTitle"/>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@android:color/darker_gray"
-        app:layout_constraintTop_toBottomOf="@id/layoutPengirim"/>
+    <RelativeLayout
+        android:id="@+id/layoutJenis"
+        android:layout_width="140dp"
+        android:layout_height="170dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/layoutPengirim"
+        app:layout_constraintTop_toBottomOf="@id/layoutTitle">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="10dp"
+            android:fontFamily="@font/open_sans"
+            android:letterSpacing="0.2"
+            android:text="JENIS BARANG"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="11sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/typeFood"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="45dp"
+            android:src="@drawable/ic_food" />
+
+        <ImageView
+            android:id="@+id/typeDocument"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="45dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="15dp"
+            android:src="@drawable/ic_document" />
+
+        <ImageView
+            android:id="@+id/typeMedicine"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="45dp"
+            android:src="@drawable/ic_medicine" />
+
+
+        <ImageView
+            android:id="@+id/typeCloth"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="45dp"
+            android:src="@drawable/ic_cloth" />
+
+        <TextView
+            android:id="@+id/typeOther"
+            android:layout_width="140dp"
+            android:layout_height="30dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="10dp"
+            android:fontFamily="@font/open_sans"
+            android:gravity="center"
+            android:letterSpacing="0.2"
+            android:text="LAINNYA"
+            android:textSize="11dp"
+            android:textStyle="bold" />
+
+
+    </RelativeLayout>
 
     <View
         android:layout_width="match_parent"
@@ -158,7 +237,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="20dp"
-            android:text="DELIVERY LOCATION"
+            android:text="PICKUP LOCATION"
             android:letterSpacing="0.2"
             android:fontFamily="@font/open_sans"
             android:textStyle="bold"
@@ -186,23 +265,22 @@
                 android:layout_height="65dp"
                 android:layout_marginStart="5dp"
                 android:fontFamily="@font/open_sans"
-                android:hint="Silahkan klik melalui peta di atas"
+                android:hint="Alamat"
                 android:textAlignment="viewStart"
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 android:textStyle="bold" />
-
         </LinearLayout>
+
 
         <Button
             android:id="@+id/containedButton"
-            android:layout_width="450dp"
+            android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:layout_gravity="center"
-            android:backgroundTint="@color/white"
             android:text="Next"
             android:textColor="@color/black"
-
+            android:backgroundTint="@color/white"
+            android:layout_gravity="center"
             />
 
     </LinearLayout>
@@ -210,4 +288,3 @@
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-

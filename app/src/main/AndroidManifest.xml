@@ -13,6 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PAM_Tugas3">
         <activity
+            android:name=".SenderActivity"
+            android:exported="false" />
+        <activity
             android:name=".RecipientActivity"
             android:exported="false" />
 
