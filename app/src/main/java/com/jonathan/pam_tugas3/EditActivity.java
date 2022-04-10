@@ -39,7 +39,7 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private EditText senderName, numCellSender, recipientName, numCellRecipient, jenis;
     private Button btnSave;
-    private TextView txtLatitude, txtLongitude, address;
+    private TextView txtLatitude, txtLongitude, address, txtAdressAwal;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private String id = "";
     private GoogleMap gMap;
@@ -51,15 +51,16 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_edit);
-            senderName = findViewById(R.id.senderName);
-            numCellRecipient = findViewById(R.id.numCellRecipient);
-            numCellSender = findViewById(R.id.numCellSender);
-            recipientName = findViewById(R.id.recipientName);
-            jenis = findViewById(R.id.jenis);
+            senderName = (EditText) findViewById(R.id.senderName);
+            numCellRecipient = (EditText) findViewById(R.id.numCellRecipient);
+            numCellSender = (EditText) findViewById(R.id.numCellSender);
+            recipientName = (EditText) findViewById(R.id.recipientName);
+            jenis = (EditText) findViewById(R.id.jenis);
             btnSave = findViewById(R.id.btn_save);
             txtLongitude = findViewById(R.id.txtLongitude);
             txtLatitude = findViewById(R.id.txtLatitude);
             address = findViewById(R.id.txtAddress);
+            txtAdressAwal = findViewById(R.id.txtAddressAwal);
 
             SupportMapFragment supportMapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
             assert supportMapFragment != null;
@@ -84,6 +85,30 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
                 }
                 else{
                     //set data2 ke db
+                    DocumentReference order = db.collection("orders").document(id);
+                    order.get().addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+
+                                order.update("pengirim.Sender name",senderName.getText().toString());
+                                order.update("pengirim.Sender phone number",numCellSender.getText().toString());
+                                order.update("name", senderName.getText().toString());
+                                order.update("penerima.Recipient name",recipientName.getText().toString());
+                                order.update("penerima.Recipient phone number",numCellRecipient.getText().toString());
+
+                                order.update("jenis barang", jenis.getText().toString());
+                                if(selectedPlace != null) {
+                                    order.update("penerima.latDelivery", selectedPlace.latitude);
+                                    order.update("penerima.lngDelivery", selectedPlace.longitude);
+                                }
+                                order.update("penerima.Recipient delivery address", address.getText().toString());
+
+                            }
+                            }
+                        });
+                    startActivity(new Intent(getApplicationContext(), ListActivity.class)
+                            .putExtra("success",true));
                 }
             });
 
@@ -135,7 +160,7 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
                     Map<String, Object> pengirim = (Map<String, Object>) document.getData().get("pengirim");
 
                     numCellSender.setText(pengirim.get("Sender phone number").toString());
-
+                    txtAdressAwal.setText(pengirim.get("Sender pickup address").toString());
                     Map<String, Object> penerima = (Map<String, Object>) document.getData().get("penerima");
                     numCellRecipient.setText(penerima.get("Recipient phone number").toString());
                     recipientName.setText(penerima.get("Recipient name").toString());

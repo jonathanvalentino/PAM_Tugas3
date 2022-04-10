@@ -42,6 +42,7 @@ public class ListActivity extends AppCompatActivity {
     private List<Order> list = new ArrayList<>();
     private OrderAdapter orderAdapter;
     private ImageView buttonBack;
+    private boolean success = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +88,16 @@ public class ListActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            success = bundle.getBoolean("success");
+        }
+        if(success==true){
+            new SweetAlertDialog(this, SweetAlertDialog.SUCCESS_TYPE)
+                    .setTitleText("Sukses")
+                    .setContentText("Order telah di update")
+                    .show();
+        }
     }
 
     @Override
@@ -134,4 +145,5 @@ public class ListActivity extends AppCompatActivity {
                 .setContentText("Berhasil hapus data")
                 .show();
     }
+
 }

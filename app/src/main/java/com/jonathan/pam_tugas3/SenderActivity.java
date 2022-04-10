@@ -225,7 +225,7 @@ public class SenderActivity extends AppCompatActivity implements OnMapReadyCallb
 
         String name = senderName.getText().toString();
 
-        pengirim.put("Sender_name ", senderName.getText().toString());
+        pengirim.put("Sender name", senderName.getText().toString());
         pengirim.put("Sender phone number", numCell.getText().toString());
         pengirim.put("Sender pickup address", txtAddress.getText().toString());
 
